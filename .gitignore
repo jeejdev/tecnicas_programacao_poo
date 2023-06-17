@@ -106,3 +106,10 @@ next-env.d.ts
 
 ### VS Code ###
 /exercicio4/pl/.vscode/
+
+
+
+# Ignore do Ex 5 (PL):
+
+/exercicio5/back-ex5/node_modules/
+/exercicio5/front-ex5/node_modules/
