@@ -1,0 +1,108 @@
+# Ignore do Ex 1:
+
+# dependencies
+/exercicio1/node_modules/
+/exercicio1/node_modules/**
+
+# output
+/exercicio1/out/
+/exercicio1/out/**
+
+
+# Ignore do Ex 2:
+
+# dependencies
+/exercicio2/node_modules
+/exercicio2/.pnp
+/exercicio2/.pnp.js
+
+# testing
+/exercicio2/coverage
+
+# production
+/exercicio2/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# Ignore do Ex 4:
+
+# dependencies
+/exercicio4/front-ex4/node_modules
+/exercicio4/front-ex4/.pnp
+/exercicio4/front-ex4/.pnp.js
+
+# testing
+/exercicio4/front-ex4/coverage
+
+# next.js
+/exercicio4/front-ex4/.next/
+/exercicio4/front-ex4/out/
+
+# production
+/exercicio4/front-ex4/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+
+# Ignore do Ex 4 (PL):
+
+# PL dependencies
+/exercicio4/pl/target/
+!/exercicio4/pl/.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.exercicio4/pl/.apt_generated
+.exercicio4/pl/.classpath
+.exercicio4/pl/.factorypath
+.exercicio4/pl/.project
+.exercicio4/pl/.settings
+.exercicio4/pl/.springBeans
+.exercicio4/pl/.sts4-cache
+
+### IntelliJ IDEA ###
+.exercicio4/pl/.idea
+.exercicio4/pl/*.iws
+.exercicio4/pl/*.iml
+.exercicio4/pl/*.ipr
+
+### NetBeans ###
+/exercicio4/pl/nbproject/private/
+/exercicio4/pl/nbbuild/
+/exercicio4/pl/dist/
+/exercicio4/pl/nbdist/
+/exercicio4/pl/.nb-gradle/
+/exercicio4/pl/build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+/exercicio4/pl/.vscode/
