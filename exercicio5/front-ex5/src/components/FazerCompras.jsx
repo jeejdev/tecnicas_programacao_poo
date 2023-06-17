@@ -7,6 +7,12 @@ export default function FazerCompras() {
   const [servicos, setServicos] = useState([]);
   const [pets, setPets] = useState([]);
 
+  const [idUsuario, setIdUsuario] = useState(1);
+  const [idServico, setIdServico] = useState(1);
+  const [idProduto, setIdProduto] = useState(1);
+  const [idPet, setIdPet] = useState(1);
+
+
   useEffect(() => {
     const fetchClientes = async () => {
       try {
@@ -40,7 +46,7 @@ export default function FazerCompras() {
 
     const fetchPets = async () => {
       try {
-        const response = await fetch("http://localhost:3000/pets/listar");
+        const response = await fetch("http://localhost:3000/pet/listar");
         const data = await response.json();
         setPets(data);
       } catch (error) {
@@ -60,10 +66,16 @@ export default function FazerCompras() {
     setOpcaoSelecionada(e.target.value);
   };
 
+  const handleButtonClick = () => {
+    if (opcaoSelecionada === "") {
+      alert("Selecione uma opção antes de enviar!");
+    } else {
+      handleEnviar();
+    }
+  };
+
   const handleEnviar = async () => {
-    const id_usuario = document.getElementById('idUsuario').value;
-    const id_servico = document.getElementById('idServico').value;
-    if (opcaoSelecionada === "servico" && id_usuario && id_servico) {
+    if (opcaoSelecionada === "servico" && idUsuario && idServico) {
       try {
         const response = await fetch("http://localhost:3000/reqservice/cadastrar", {
           method: "POST",
@@ -71,25 +83,70 @@ export default function FazerCompras() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id_usuario: id_usuario,
-            id_servico: id_usuario,
+            id_usuario: idUsuario,
+            id_servico: idServico,
           }),
         });
 
         if (response.ok) {
-          console.log("Solicitação de serviço cadastrada com sucesso!");
+          alert("Solicitação de serviço cadastrada com sucesso!");
           // Redirecionar ou executar ação desejada após o cadastro
         } else {
-          console.error("Erro ao cadastrar a solicitação de serviço.");
+          alert("Erro ao cadastrar a solicitação de serviço.");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (opcaoSelecionada === "pet" && idUsuario && idPet) {
+      try {
+        const response = await fetch("http://localhost:3000/tutor/cadastrar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id_usuario: idUsuario,
+            id_pet: idPet,
+          }),
+        });
+
+        if (response.ok) {
+          alert("Tutor cadastrado com sucesso!");
+          // Redirecionar ou executar ação desejada após o cadastro
+        } else {
+          alert("Erro ao cadastrar o tutor.");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (opcaoSelecionada === "produto" && idUsuario && idPet) {
+      try {
+        const response = await fetch("http://localhost:3000/purchase/cadastrar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id_usuario: idUsuario,
+            id_produto: idProduto,
+          }),
+        });
+
+        if (response.ok) {
+          alert("Compra cadastrada com sucesso!");
+          // Redirecionar ou executar ação desejada após o cadastro
+        } else {
+          alert("Erro ao cadastrar a compra.");
         }
       } catch (error) {
         console.error(error);
       }
     } else {
-      console.error("Preencha todos os campos antes de enviar a solicitação de serviço.");
+      console.error("Preencha todos os campos antes de enviar a solicitação.");
     }
   };
-  
+
+
   return (
     <div>
       <Navbar />
@@ -97,7 +154,12 @@ export default function FazerCompras() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h2 className="text-xl font-bold mb-4">Selecione um cliente:</h2>
-            <select className="w-full p-2 border rounded">
+            <select className="w-full p-2 border rounded" onChange={(event) => setIdUsuario(event.target.value)}>
+              {clientes.length < 1 && (
+                <option value="" disabled selected>
+                  Nenhum cliente cadastrado
+                </option>
+              )}
               {clientes.map((cliente) => (
                 <option key={cliente.id_usuario} value={cliente.id_usuario} id="idUsuario">
                   {cliente.nome}
@@ -127,30 +189,30 @@ export default function FazerCompras() {
             </select>
           )}
           {opcaoSelecionada === "produto" && (
-            <select className="w-full p-2 border rounded">
+            <select className="w-full p-2 border rounded" onChange={(event) => setIdProduto(event.target.value)}>
               <option value="" aria-required>Selecione um produto</option>
               {produtos.map((produto) => (
-                <option key={produto.id_produto} value={produto.id_produto} aria-required>
+                <option key={produto.id_produto} value={produto.id_produto} id="idProduto">
                   {produto.nome}
                 </option>
               ))}
             </select>
           )}
           {opcaoSelecionada === "servico" && (
-            <select className="w-full p-2 border rounded">
-              <option value="" aria-required>Selecione um serviço</option>
+            <select className="w-full p-2 border rounded" onChange={(event) => setIdServico(event.target.value)}>
+              <option value="" id='idServico'>Selecione um serviço</option>
               {servicos.map((servico) => (
-                <option key={servico.id_servico} value={servico.id_servico} id='idServico' required>
+                <option key={servico.id_servico} value={servico.id_servico}>
                   {servico.nome}
                 </option>
               ))}
             </select>
           )}
           {opcaoSelecionada === "pet" && (
-            <select className="w-full p-2 border rounded">
+            <select className="w-full p-2 border rounded" onChange={(event) => setIdPet(event.target.value)}>
               <option value="">Selecione um pet</option>
               {pets.map((pet) => (
-                <option key={pet.id_pet} value={pet.id_pet}>
+                <option key={pet.id_pet} value={pet.id_pet} id="idPet">
                   {pet.nome}
                 </option>
               ))}
@@ -160,20 +222,8 @@ export default function FazerCompras() {
         <div className="mt-8 flex justify-center">
           <button
             className="bg-blue-500 text-white px-6 py-3 rounded-lg"
-            onClick={() => {
-              if (opcaoSelecionada === "produto") {
-                // Lógica para fazer a compra do produto
-                console.log("Compra de produto");
-              } else if (opcaoSelecionada === "") {
-                // Lógica para assinar o serviço
-                alert("Selecione uma opção antes de enviar!")
-              } else if (opcaoSelecionada === "servico") {
-                handleEnviar()
-              } else if (opcaoSelecionada === "pet") {
-                // Lógica para atribuir o pet ao cliente
-                console.log("Atribuir pet ao cliente");
-              }
-            }}
+            onClick={handleButtonClick}
+            disabled={!opcaoSelecionada}
           >
             ENVIAR
           </button>

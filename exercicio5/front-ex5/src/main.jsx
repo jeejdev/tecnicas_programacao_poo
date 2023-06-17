@@ -32,6 +32,7 @@ import AtualizarProduto from "./components/AtualizarProduto"
 
 // Compras
 import FazerCompras from "./components/FazerCompras"
+import ListarAtos from "./components/ListarAtos"
 
 
 const router = createBrowserRouter([
@@ -114,6 +115,10 @@ const router = createBrowserRouter([
   {
     path: "/compras",
     element: <FazerCompras />,
+  },
+  {
+    path: "/listar",
+    element: <ListarAtos />,
   },
 ])
 

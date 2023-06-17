@@ -7,7 +7,7 @@ const SolicitacoesServicos = require('../models/RequestService');
 const cadastrarSolicitacao = async (req, res) => {
     try {
         const { id_usuario, id_servico } = req.body;
-
+        console.log('Chegou isso aqui:', id_usuario + '-' + id_servico)
         // Verificar se o usuário existe
         const usuario = await Usuario.findByPk(id_usuario);
         if (!usuario) {
@@ -57,13 +57,13 @@ const excluirSolicitacao = async (req, res) => {
 // Função para listar os serviços
 const listarSolicitacoes = async (req, res) => {
     try {
-      const servicos = await SolicitacoesServicos.findAll();
-      res.status(200).json(servicos);
+        const servicos = await SolicitacoesServicos.findAll();
+        res.status(200).json(servicos);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Erro ao listar os serviços.' });
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao listar os serviços.' });
     }
-  };
+};
 
 module.exports = {
     cadastrarSolicitacao,
