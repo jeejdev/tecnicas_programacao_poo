@@ -1,6 +1,9 @@
 # Repositório 'Técnicas de Programação, 2º Semestre - DSM'
 Neste repositório, irei separar em pastas os cinco exercícios propostos pelo Profº Gerson da Penha Neto, FATEC SJC.
 
+# Como executar?
+O método de executar todas as listas segue de forma bem parecida, é necessário estar com o MySQL instalado em sua máquina; para rodar o front-end é necessário instalar as dependências com o "npm i", e depois rodar o servidor com "npm run dev"; já no back-end, é necessário instalar as dependências e depois rodar o servidor com "npm start".
+
 ## CRUD_Typescript - Atividade 1
 Criação de um CRUD usando TypeScript e POO, lista 1 de 'Técnicas de Programação'
 

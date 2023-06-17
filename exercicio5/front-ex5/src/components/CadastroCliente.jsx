@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { Navbar } from "./Navbar"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Navbar } from "./Navbar";
+import InputMask from "react-input-mask";
 
 function CadastroCliente() {
-  // LISTAR CLIENTES
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  // CADASTRO DO CLIENTE
   const [cliente, setCliente] = useState({
     nome: "",
     senha: "",
@@ -16,18 +15,18 @@ function CadastroCliente() {
     celular: "",
     cep: "",
     status_usuario: true,
-  })
+  });
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setCliente((prevCliente) => ({
       ...prevCliente,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       const response = await fetch("http://localhost:3000/user/cadastrar", {
@@ -36,21 +35,21 @@ function CadastroCliente() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify([cliente]),
-      })
-      console.log(cliente)
+      });
+
       if (response.ok) {
         // Cadastro bem-sucedido
-        alert("Cliente cadastrado com sucesso.")
-        navigate("/clientes")
+        alert("Cliente cadastrado com sucesso.");
+        navigate("/clientes");
       } else {
         // Ocorreu um erro no cadastro
-        alert("Ocorreu um erro ao cadastrar o cliente.")
+        alert("Ocorreu um erro ao cadastrar o cliente.");
       }
     } catch (error) {
-      console.error(error)
-      alert("Ocorreu um erro ao cadastrar o cliente.")
+      console.error(error);
+      alert("Ocorreu um erro ao cadastrar o cliente.");
     }
-  }
+  };
 
   return (
     <div>
@@ -85,26 +84,12 @@ function CadastroCliente() {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-2" htmlFor="CPF">
-            CPF:
-          </label>
-          <input
-            className="w-full px-3 py-2 border rounded"
-            type="text"
-            id="CPF"
-            name="CPF"
-            value={cliente.CPF}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-4">
           <label className="block mb-2" htmlFor="dataNascimento">
             Data de Nascimento:
           </label>
           <input
             className="w-full px-3 py-2 border rounded"
-            type="text"
+            type="date"
             id="dataNascimento"
             name="dataNascimento"
             value={cliente.dataNascimento}
@@ -116,12 +101,32 @@ function CadastroCliente() {
           <label className="block mb-2" htmlFor="genero">
             Gênero:
           </label>
-          <input
+          <select
             className="w-full px-3 py-2 border rounded"
-            type="text"
             id="genero"
             name="genero"
             value={cliente.genero}
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled>Selecione</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-2" htmlFor="CPF">
+            CPF:
+          </label>
+          <InputMask
+            mask="999.999.999-99"
+            className="w-full px-3 py-2 border rounded"
+            type="text"
+            id="CPF"
+            name="CPF"
+            value={cliente.CPF}
             onChange={handleChange}
             required
           />
@@ -130,7 +135,8 @@ function CadastroCliente() {
           <label className="block mb-2" htmlFor="celular">
             Celular:
           </label>
-          <input
+          <InputMask
+            mask="(99) 99999-9999"
             className="w-full px-3 py-2 border rounded"
             type="text"
             id="celular"
@@ -144,7 +150,8 @@ function CadastroCliente() {
           <label className="block mb-2" htmlFor="cep">
             CEP:
           </label>
-          <input
+          <InputMask
+            mask="99999-999"
             className="w-full px-3 py-2 border rounded"
             type="text"
             id="cep"
@@ -161,7 +168,7 @@ function CadastroCliente() {
         </div>
       </form>
     </div>
-  )
+  );
 }
 
-export default CadastroCliente
+export default CadastroCliente;

@@ -2,8 +2,8 @@ const User = require("../models/User")
 
 module.exports = class UserController {
   static async cadastrarUsuario(req, res) {
-    const data = req.body
-
+    const response = req.body
+    const data = response[0]
     const usuario = {
       nome: data.nome,
       CPF: data.CPF,
@@ -49,45 +49,11 @@ module.exports = class UserController {
     }
   }
 
-  static async deletarUsuario(req, res) {
-    const idUsuario = req.params.id
-    const usuario = await User.findByPk(idUsuario)
-
-    try {
-      if (usuario.status_usuario == true) {
-        await Usuario.update(
-          {
-            status_usuario: false,
-          },
-          {
-            where: {
-              id_usuario: idUsuario,
-            },
-          }
-        )
-      } else {
-        await Usuario.update(
-          {
-            status_usuario: true,
-          },
-          {
-            where: {
-              id_usuario: idUsuario,
-            },
-          }
-        )
-      }
-      return res.json({ message: "Usuário apagado com sucesso!", status: 201 }).status(201)
-    } catch (error) {
-      return res.json(error).status(500)
-    }
-  }
 
   static async atualizarUsuario(req, res) {
     const idUsuario = req.params.id
-
     const data = req.body
-
+    console.log('Atualização', data)
     if (!data.senha) {
       return res.json({ message: "Por favor, adicione uma senha!", status: 500 }).status(500)
     } else if (!data.nome) {
@@ -106,13 +72,10 @@ module.exports = class UserController {
       return res.json({ message: "Por favor, adicione um cep valido!", status: 500 }).status(500)
     }
 
-    const salt = bcrypt.genSaltSync(10)
-    const hashedSenha = bcrypt.hashSync(data.senha, salt)
-
     try {
       await User.update(
         {
-          senha: hashedSenha,
+          senha: data.senha,
           nome: data.nome,
           CPF: data.CPF,
           dataNascimento: data.dataNascimento,
@@ -134,39 +97,34 @@ module.exports = class UserController {
   }
 
   static async alterarStatusUsuario(req, res) {
-    const oId_usuario = req.params.id
-
-    console.log(oId_usuario)
-
-    const usuario = await User.findByPk(oId_usuario)
+    const oId_usuario = req.params.id;
 
     try {
-      if (usuario.status_usuario == true) {
-        await Usuario.update(
-          {
-            status_usuario: false,
-          },
-          {
-            where: {
-              id_usuario: oId_usuario,
-            },
-          }
-        )
-      } else {
-        await Usuario.update(
-          {
-            status_usuario: true,
-          },
-          {
-            where: {
-              id_usuario: oId_usuario,
-            },
-          }
-        )
+      const usuario = await User.findByPk(oId_usuario);
+
+      if (!usuario) {
+        return res.json({ message: "Usuário não encontrado!", status: 404 }).status(404);
       }
-      return res.json({ message: "Status do usuário alterado com sucesso!", status: 201 }).status(201)
+
+      const novoStatus = !usuario.status_usuario;
+
+      await User.update(
+        {
+          status_usuario: novoStatus,
+        },
+        {
+          where: {
+            id_usuario: oId_usuario,
+          },
+        }
+      );
+
+      console.log('Terminou o try');
+      return res.json({ message: "Status do usuário alterado com sucesso!", status: 201 }).status(201);
     } catch (error) {
-      return res.json(error).status(500)
+      console.log(error);
+      return res.json({ message: "Erro ao alterar o status do usuário!", status: 500 }).status(500);
     }
   }
+
 }
